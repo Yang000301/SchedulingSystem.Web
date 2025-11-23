@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using SchedulingSystem.API.Data;   // 放 AppDbContext 的 namespace
-using SchedulingSystem.API.Modles; // 放 User entity 的 namespace
+using SchedulingSystem.API.Models; // 放 User entity 的 namespace
 
 
 namespace SchedulingSystem.API.Controller

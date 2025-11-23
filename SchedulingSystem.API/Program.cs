@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using SchedulingSystem.API.Data; 
+using SchedulingSystem.API.Data;
+using SchedulingSystem.API.Middlewares;
+using SchedulingSystem.API.Repositories.ScheduleRepos;
+using SchedulingSystem.API.Services.ScheduleServices;
+
+
 namespace SchedulingSystem.API
 {
     public class Program
@@ -15,7 +20,10 @@ namespace SchedulingSystem.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            //API Schedule Service & Repository DI
+            builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+            builder.Services.AddScoped<IScheduleService, ScheduleService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -26,6 +34,8 @@ namespace SchedulingSystem.API
             }
 
             app.UseHttpsRedirection();
+            //Exception Middleware
+            app.UseMiddleware<GlobalExceptionMiddleware>();
 
             app.UseAuthorization();
 
