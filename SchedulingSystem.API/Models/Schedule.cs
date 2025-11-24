@@ -22,5 +22,14 @@ namespace SchedulingSystem.API.Models
 
         [Column("created_by_user_id")]
         public int? CreatedByUserId { get; set; }
+
+
+        // 🔽 新增：導覽屬性（跟其他表連動用）
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; } = null!;
+
+        [ForeignKey(nameof(ShiftTypeId))]
+        public ShiftType ShiftType { get; set; } = null!;
+
     }
 }

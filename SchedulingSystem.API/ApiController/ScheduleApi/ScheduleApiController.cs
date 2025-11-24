@@ -21,5 +21,14 @@ namespace SchedulingSystem.API.ApiController.ScheduleApi
             var res = await _service.CreateAsync(req);
             return Ok(res);
         }
+
+
+        // DELETE /api/schedules/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, [FromBody] DeleteScheduleRequest req)
+        {
+            await _service.DeleteAsync(id, req);
+            return NoContent(); // 204
+        }
     }
 }
