@@ -1,10 +1,43 @@
 ﻿@page
-@model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "首頁";
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-3">
+    <h2 class="mb-3">我的班表</h2>
+
+    <div id="calendar-app"></div>
 </div>
+
+@section Scripts {
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js';
+        import CalendarApp from '/js/schedule/calendar-app.js';
+
+        // 🔹 key 名稱跟右邊 Application → Local Storage 對齊：
+        const token    = localStorage.getItem('jwt') || '';        // ✅ 這裡改成 'jwt'
+        const userId   = localStorage.getItem('userId');           // "2"
+        const userName = localStorage.getItem('userName') || '';   // "員工01"
+
+        const parsedUserId = userId ? Number(userId) : null;
+
+        // 先用 userId 判斷登入，比較寬鬆一點也沒關係（之後要嚴格再把 token 算進來）
+        const isAuth = !!parsedUserId; // ✅ 這行先簡化
+
+        console.log('[Calendar Index] props =>', {
+            isAuth,
+            token,
+            userId: parsedUserId,
+            userName
+        });
+
+        createApp(CalendarApp, {
+            isAuth,
+            token,
+            userId: parsedUserId,
+            userName
+        }).mount('#calendar-app');
+    </script>
+}
+

@@ -13,6 +13,8 @@ namespace SchedulingSystem.API.Services.ScheduleServices
         //老闆看排行榜
 
         Task<List<ScheduleLeaderboard>> GetMonthlyLeaderboardAsync(int year, int month);
+
+        Task<List<ScheduleLeaderboard>> GetYearlyLeaderboardAsync(int year);
     }
 
 

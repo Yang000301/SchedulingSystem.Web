@@ -22,6 +22,21 @@ namespace SchedulingSystem.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // ======================
+            // 1) CORS：允許 Web 專案 7143 來叫 API
+            // ======================
+            var corsPolicyName = "AllowWeb";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(corsPolicyName, policy =>
+                {
+                    policy.WithOrigins("https://localhost:7143")   // 你的 Web URL
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -71,6 +86,8 @@ namespace SchedulingSystem.API
             }
 
             app.UseHttpsRedirection();
+            // ★★★★★ CORS 要放這裡 Authentication 之前 ★★★★★
+            app.UseCors(corsPolicyName);
             //Exception Middleware
             app.UseMiddleware<GlobalExceptionMiddleware>();
             // ✅ 這兩個順序要長這樣：

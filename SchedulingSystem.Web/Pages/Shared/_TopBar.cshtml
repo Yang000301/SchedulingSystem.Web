@@ -1,0 +1,20 @@
+﻿<nav class="navbar navbar-dark bg-dark app-topbar px-3">
+    <a class="navbar-brand" asp-page="/Index">排班系統</a>
+
+    <div class="ms-auto d-flex align-items-center gap-3">
+
+        <span id="topbar-user" class="text-light small">尚未登入</span>
+
+        <button id="btn-logout"
+                class="btn btn-outline-light btn-sm"
+                style="display:none">
+            登出
+        </button>
+
+        <a id="btn-login"
+           asp-page="/Auth/Login"
+           class="btn btn-outline-light btn-sm">
+            登入
+        </a>
+    </div>
+</nav>

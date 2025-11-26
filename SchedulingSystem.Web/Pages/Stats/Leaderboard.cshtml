@@ -1,0 +1,37 @@
+﻿@page
+@model SchedulingSystem.Web.Pages.Stats.LeaderboardModel
+@{
+    ViewData["Title"] = "排班排行榜";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">📊 排班排行榜</h2>
+
+    <div class="leaderboard-toolbar">
+        <input type="month" id="leaderboard-month" class="form-control" />
+        <button id="btn-load-leaderboard" class="btn btn-primary">
+            查詢
+        </button>
+    </div>
+
+    <div class="leaderboard-card mt-4">
+        <table class="leaderboard-table" id="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>員工</th>
+                    <th>出勤數</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div id="leaderboard-empty" class="leaderboard-empty d-none">
+            這個月份還沒有資料
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/stats/leaderboard.js"></script>
+}

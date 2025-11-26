@@ -182,5 +182,26 @@ namespace SchedulingSystem.API.Services.ScheduleServices
             return result;
         }
 
+        public async Task<List<ScheduleLeaderboard>> GetYearlyLeaderboardAsync(int year)
+        {
+            // 1) 先從 repo 抓「這一年所有人的班表」
+            var schedules = await _repo.GetByYearAsync(year);
+
+            // 2) 一樣 GroupBy + 統計 + 排序
+            var result = schedules
+                .GroupBy(s => new { s.UserId, s.User.DisplayName })
+                .Select(g => new ScheduleLeaderboard
+                {
+                    UserId = g.Key.UserId,
+                    DisplayName = g.Key.DisplayName,
+                    TotalShifts = g.Count()
+                })
+                .OrderByDescending(x => x.TotalShifts)
+                .ToList();
+
+            return result;
+        }
+
+
     }
 }

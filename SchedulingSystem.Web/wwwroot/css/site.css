@@ -1,22 +1,261 @@
-html {
-  font-size: 14px;
+﻿/* Layout 基本架構 */
+.app-shell {
+    background-color: #f5f6fa;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.app-topbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.08);
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.app-body {
+    min-height: 0; /* 修正 flex 下拉伸問題 */
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+/* Sidebar */
+.app-sidebar {
+    width: 220px;
+    background-color: #212529;
+    color: #fff;
+    border-right: 1px solid #343a40;
 }
 
-body {
-  margin-bottom: 60px;
+.sidebar-inner {
+    padding-bottom: 1rem;
+}
+
+.sidebar-link {
+    color: #ced4da;
+    border-radius: 0;
+    padding: .6rem 1.2rem;
+    font-size: .9rem;
+}
+
+    .sidebar-link:hover,
+    .sidebar-link:focus {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .sidebar-link.active {
+        background-color: #0d6efd;
+        color: #fff;
+    }
+
+/* 主內容 */
+.app-main {
+    padding-left: 0;
+}
+
+/* 卡片風格 */
+.card {
+    border-radius: .5rem;
+    box-shadow: 0 1px 3px rgba(15,23,42,.08);
+}
+
+/* 日曆用的簡單樣式（之後可以再微調） */
+.schedule-calendar .calendar-header,
+.schedule-calendar .calendar-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 4px;
+}
+
+.schedule-calendar .calendar-cell {
+    border: 1px solid #dee2e6;
+    min-height: 90px;
+    padding: 4px;
+    border-radius: .35rem;
+    background-color: #fff;
+    font-size: .8rem;
+}
+
+.schedule-calendar .calendar-date {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.schedule-calendar .calendar-holiday {
+    background-color: #ffeef0;
+}
+
+.schedule-calendar .calendar-working {
+    background-color: #f3f7ff;
+}
+
+.schedule-calendar .calendar-holiday-name {
+    font-size: .7rem;
+    color: #c1121f;
+}
+
+.schedule-calendar .calendar-shifts li {
+    line-height: 1.2;
+}
+
+/* Footer */
+.app-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+
+.my-calendar .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.my-calendar .calendar-header {
+    text-align: center;
+    padding: 4px;
+    background: #f5f5f5;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+}
+
+.my-calendar .calendar-cell {
+    min-height: 70px;
+    padding: 4px;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+    .my-calendar .calendar-cell:nth-child(7n) {
+        border-right: none;
+    }
+
+.my-calendar .cell-blank {
+    background: #fafafa;
+    cursor: default;
+}
+
+.my-calendar .day-number {
+    font-weight: 600;
+}
+
+.my-calendar .cell-weekend {
+    background: #fffaf0; /* 淡淡週末色 */
+}
+
+.my-calendar .cell-holiday {
+    background: #ffe4e1; /* 節日再明顯一點 */
+}
+
+.my-calendar .holiday-name {
+    font-size: 0.7rem;
+    margin-top: 2px;
+}
+
+.cell-shifts {
+    list-style: none;
+    padding-left: 0;
+    margin: 2px 0 0 0;
+    font-size: 0.7rem;
+}
+
+    .cell-shifts li {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+/* ===== 工具列 ===== */
+.leaderboard-toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* ===== 外卡片 ===== */
+.leaderboard-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 1px solid #e5e5e5;
+}
+
+/* ===== 表格 ===== */
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+    .leaderboard-table th {
+        text-align: left;
+        padding: 12px 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        border-bottom: 2px solid #e0e0e0;
+        background: #f7f7f7;
+    }
+
+    .leaderboard-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #eee;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .leaderboard-table tr:hover {
+        background: #f5f9ff;
+        transition: background 0.2s;
+    }
+
+/* ===== 排名數字 ===== */
+.rank-num {
+    font-weight: 700;
+    width: 60px;
+    color: #555;
+}
+
+/* ===== 出勤數 ===== */
+.shift-count {
+    font-weight: 600;
+    text-align: center; /* 中間 */
+    color: #2f6fed;
+    width: 80px; /* 欄寬固定，不會跑到超右邊 */
+}
+
+/* ===== 🥇🥈🥉前三名高亮（亮色版） ===== */
+.rank-1 {
+    background: linear-gradient(90deg, #fff7cc, #ffffff);
+}
+
+    .rank-1 .rank-num {
+        color: #d4a000;
+        font-size: 16px;
+    }
+
+.rank-2 {
+    background: linear-gradient(90deg, #f0f0f0, #ffffff);
+}
+
+    .rank-2 .rank-num {
+        color: #888;
+        font-size: 15px;
+    }
+
+.rank-3 {
+    background: linear-gradient(90deg, #fbe6d0, #ffffff);
+}
+
+    .rank-3 .rank-num {
+        color: #b87333;
+        font-size: 15px;
+    }
+
+/* ===== 空資料提示 ===== */
+.leaderboard-empty {
+    text-align: center;
+    padding: 24px;
+    color: #888;
+    font-size: 14px;
 }

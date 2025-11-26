@@ -85,6 +85,8 @@ namespace SchedulingSystem.API.Repositories.ScheduleRepos
                 .OrderBy(s => s.WorkDate)
                 .ToListAsync();
         }
+
+        //排行榜
         public async Task<List<Schedule>> GetByMonthAsync(int year, int month)
         {
             return await _db.Schedules
@@ -95,6 +97,18 @@ namespace SchedulingSystem.API.Repositories.ScheduleRepos
                     s.WorkDate.Month == month)
                 .ToListAsync();
         }
+
+        public Task<List<Schedule>> GetByYearAsync(int year)
+        {
+            var start = new DateTime(year, 1, 1);
+            var end = start.AddYears(1);
+
+            return _db.Schedules
+                .Include(s => s.User)
+                .Where(s => s.WorkDate >= start && s.WorkDate < end)
+                .ToListAsync();
+        }
+
     }
 }
     

@@ -25,6 +25,11 @@ namespace SchedulingSystem.API.Repositories.ScheduleRepos
         Task<List<Schedule>> GetByEmployeeAndMonthAsync(int userId, int year, int month);
         //排行榜 用
         Task<List<Schedule>> GetByMonthAsync(int year, int month);
+
+        Task<List<Schedule>> GetByYearAsync(int year);
+
+
+
         }
        
 }

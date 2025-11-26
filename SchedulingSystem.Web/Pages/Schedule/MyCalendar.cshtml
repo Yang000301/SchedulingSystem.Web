@@ -1,0 +1,22 @@
+﻿@page
+@{
+    ViewData["Title"] = "我的班表";
+    Layout = "_Layout";
+}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+                <h4 class="mb-0">我的班表</h4>
+                <small class="text-muted" id="current-user-label">尚未登入</small>
+            </div>
+        </div>
+
+        <!-- 這裡改成 list 用的掛載點 -->
+        <div id="my-schedule-list-app" class="mt-3"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/schedule/my-schedule-list.js"></script>
+}
