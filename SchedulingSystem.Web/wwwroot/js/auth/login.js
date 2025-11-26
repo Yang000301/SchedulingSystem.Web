@@ -72,7 +72,7 @@ if (form) {
             localStorage.setItem('role', user.role || '');
 
             // 導到班表頁
-            window.location.href = '/ Home / Index';
+            window.location.href = '/Index';
         } catch (err) {
             console.error('[LOGIN] fetch error =', err);
             errorBox.textContent = '系統錯誤（請稍後再試）';

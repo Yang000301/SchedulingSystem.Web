@@ -202,10 +202,9 @@ export default {
                 return;
             }
 
-            // ✅ 題目：不能少於 6 天 → 這裡擋
+            // ✅ 未滿 6 天：只提醒，不擋新增
             if (this.totalSchedulesCount < 6) {
-                this.actionError = `本月僅排 ${this.totalSchedulesCount} 天，未達 6 天，禁止新增排班`;
-                return;
+                this.actionError = `目前本月僅排 ${this.totalSchedulesCount} 天，請儘快排滿至少 6 天。（仍可新增排班）`;
             }
 
             try {
@@ -237,6 +236,13 @@ export default {
                 }
 
                 await this.loadSchedules();
+
+                // 重新依照最新天數更新提醒
+                if (this.totalSchedulesCount < 6) {
+                    this.actionError = `目前本月僅排 ${this.totalSchedulesCount} 天，請儘快排滿至少 6 天。（仍可新增排班）`;
+                } else {
+                    this.actionError = '';
+                }
             } catch (err) {
                 console.error('[createSchedule] error', err);
                 this.actionError = '系統錯誤';
@@ -251,9 +257,9 @@ export default {
                 return;
             }
 
-            // ✅ 題目：不能少於 6 天 → 刪除也要擋
+            // ✅ 題目：不能少於 6 天 → 刪除要擋，避免刪到 6 以下
             if (this.totalSchedulesCount <= 6) {
-                this.actionError = `本月僅排 ${this.totalSchedulesCount} 天班，已是最低，禁止刪除排班`;
+                this.actionError = `本月排班天數不得少於 6 天，目前為 ${this.totalSchedulesCount} 天，無法再刪除排班`;
                 return;
             }
 
@@ -292,6 +298,12 @@ export default {
                 }
 
                 await this.loadSchedules();
+
+                if (this.totalSchedulesCount < 6) {
+                    this.actionError = `目前本月僅排 ${this.totalSchedulesCount} 天，系統已鎖定刪除功能。`;
+                } else {
+                    this.actionError = '';
+                }
             } catch (err) {
                 console.error('[deleteSchedule] error', err);
                 this.actionError = '系統錯誤';
@@ -351,6 +363,16 @@ export default {
               <ul v-if="schedulesByDate[cell.key]" class="cell-shifts">
                 <li v-for="sch in schedulesByDate[cell.key]" :key="sch.id">
                   {{ sch.name }}
+                  <!-- totalSchedulesCount > 6 才顯示刪除按鈕 -->
+                  <button v-if="totalSchedulesCount > 6"
+                          class="btn btn-xs btn-link text-danger"
+                          style="font-size:0.7rem"
+                          @click.stop="deleteSchedule(sch.id)">
+                    刪除
+                  </button>
+                  <span v-else class="text-muted" style="font-size:0.7rem">
+                    （已接近最低 6 天，無法刪除）
+                  </span>
                 </li>
               </ul>
 
@@ -372,18 +394,13 @@ export default {
           {{ selectedDay.date.substring(0,10) }}
         </div>
 
-        <!-- 顯示當天排班列表 + 刪除按鈕（有登入才能操作刪除） -->
+        <!-- 顯示當天排班列表（上面那一段已經有刪除按鈕） -->
         <div class="mb-2">
           <div v-if="schedulesByDate[selectedDay.key] && schedulesByDate[selectedDay.key].length">
             <div class="mb-1">當天排班：</div>
             <ul class="cell-shifts">
               <li v-for="sch in schedulesByDate[selectedDay.key]" :key="sch.id">
                 {{ sch.name }}
-                <button class="btn btn-xs btn-link text-danger"
-                        style="font-size:0.7rem"
-                        @click="deleteSchedule(sch.id)">
-                  刪除
-                </button>
               </li>
             </ul>
           </div>
@@ -392,8 +409,8 @@ export default {
           </div>
         </div>
 
-        <!-- 排班操作條件 -->
-        <template v-if="isAuth && userId && totalSchedulesCount >= 6">
+        <!-- 排班操作區：登入即可新增 -->
+        <template v-if="isAuth && userId">
           <div class="mb-2 d-flex align-items-center gap-2">
             <label class="me-2 mb-0">班別：</label>
             <select class="form-select form-select-sm"
@@ -405,14 +422,15 @@ export default {
             </select>
 
             <button class="btn btn-sm btn-primary" @click="createSchedule">
-              新增排班（以員工 {{ userId }} 身分）
+              新增排班
             </button>
           </div>
-        </template>
 
-        <template v-else-if="isAuth && userId">
-          <div class="text-warning">
-            本月僅排 {{ totalSchedulesCount }} 天班，未達 6 天，禁止新增 / 刪除排班。
+          <div v-if="totalSchedulesCount < 6" class="text-warning">
+            目前本月僅排 {{ totalSchedulesCount }} 天班，請至少排滿 6 天。（仍可新增）
+          </div>
+          <div v-else class="text-muted">
+            本月已排 {{ totalSchedulesCount }} 天班，刪除時系統會避免低於 6 天。
           </div>
         </template>
 
